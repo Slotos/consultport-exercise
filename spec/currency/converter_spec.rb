@@ -21,19 +21,16 @@ RSpec.describe Currency::Converter do
     subject { described_class.new(client: remote_client) }
 
     let(:remote_client) { double("client", fetch: conversion_rates) }
+    let(:conversion_rates) { {"usd" => 3, "pln" => 2.3412} }
 
     context "when conversion is known" do
-      let(:conversion_rates) { {usd: 3, pln: 2.3412} }
-
       it "correctly converts the amount" do
         amount = 32
-        expect(subject.convert(amount, from: "JPY", to: "PLN")).to eq(BigDecimal(amount) * conversion_rates[:pln])
+        expect(subject.convert(amount, from: "JPY", to: "PLN")).to eq(BigDecimal(amount) * conversion_rates["pln"])
       end
     end
 
     context "when conversion is not known" do
-      let(:conversion_rates) { {usd: 3, pln: 2.3412} }
-
       it "raises error" do
         amount = 32
         expect { subject.convert(amount, from: "JPY", to: "BYN") }.to raise_error(described_class::UnknownRate).with_message("Couldn't discover conversion rate from JPY to BYN")

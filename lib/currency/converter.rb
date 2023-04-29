@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require_relative "converter/version"
+require_relative "api/exchangerate"
+require_relative "api/adapters/httpx"
 require "bigdecimal"
 
 module Currency
@@ -10,7 +12,7 @@ module Currency
     class UnknownRate < StandardError; end
 
     # @param [#fetch] client A client that can fetch conversion rates for a provided currency
-    def initialize(client:, precision: 6)
+    def initialize(client: Api::Exchangerate.new(Api::Adapters::HTTPX.new), precision: 6)
       raise IncompatibleClient unless client.respond_to?(:fetch)
 
       @client = client
@@ -28,7 +30,7 @@ module Currency
     private
 
     def conversion_rate(from:, to:)
-      @client.fetch(from.downcase.to_sym).fetch(to.downcase.to_sym, nil) ||
+      @client.fetch(from.downcase).tap { |r| puts r }.fetch(to.downcase, nil) ||
         raise(UnknownRate, "Couldn't discover conversion rate from #{from.upcase} to #{to.upcase}")
     end
   end

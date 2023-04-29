@@ -18,7 +18,13 @@ If bundler is not being used to manage dependencies, install the gem by executin
 
 ## Usage
 
-TODO: Write usage instructions here
+_Command line cli with options parser is not ready yet._
+
+Execute `bin/console` and enjoy:
+
+```ruby
+Currency::Converter.new.convert(42, from: :CAD, to: :EUR)
+```
 
 ## Development
 
