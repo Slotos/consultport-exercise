@@ -30,7 +30,7 @@ module Currency
     private
 
     def conversion_rate(from:, to:)
-      @client.fetch(from.downcase).tap { |r| puts r }.fetch(to.downcase, nil) ||
+      @client.fetch(from.downcase).fetch(to.downcase, nil) ||
         raise(UnknownRate, "Couldn't discover conversion rate from #{from.upcase} to #{to.upcase}")
     end
   end
