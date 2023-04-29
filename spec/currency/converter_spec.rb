@@ -25,14 +25,14 @@ RSpec.describe Currency::Converter do
 
     context "when conversion is known" do
       it "correctly converts the amount" do
-        amount = 32
+        amount = "32"
         expect(subject.convert(amount, from: "JPY", to: "PLN")).to eq(BigDecimal(amount) * conversion_rates["pln"])
       end
     end
 
     context "when conversion is not known" do
       it "raises error" do
-        amount = 32
+        amount = "32"
         expect { subject.convert(amount, from: "JPY", to: "BYN") }.to raise_error(described_class::UnknownRate).with_message("Couldn't discover conversion rate from JPY to BYN")
       end
     end

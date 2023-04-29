@@ -1,3 +1,37 @@
 #!/usr/bin/env ruby
 
 require "currency/converter"
+require "optparse"
+
+parser = Class.new do
+  def self.parse(options)
+    opts = {}
+
+    opt_parser = OptionParser.new do |parser|
+      parser.banner = "Usage: #{$PROGRAM_NAME} -f <base currency> -t <target currency> <amount>"
+
+      parser.on("-fCUR", "--from=CUR", "Three letter currency code to convert from") do |from|
+        opts[:from] = from
+      end
+
+      parser.on("-tCUR", "--to=CUR", "Three letter currency code to convert to") do |to|
+        opts[:to] = to
+      end
+
+      parser.on("-h", "--help", "Prints this help") do
+        puts parser
+        exit
+      end
+    end
+
+    opt_parser.parse!(options)
+    amount = ARGV.pop
+    raise "Specify a value to convert" unless amount
+    raise "Specify only one value" unless ARGV.empty?
+
+    [amount, opts]
+  end
+end
+
+amount, opts = parser.parse(ARGV)
+puts Currency::Converter.new.convert(amount, **opts).to_s('F')

@@ -24,7 +24,7 @@ module Currency
     # @param [String,Symbol] from An ISO 4217 currency code to convert to
     # @return [BigDecimal] the amount in a new currency
     def convert(amount, from:, to:)
-      amount * BigDecimal(conversion_rate(from: from.to_s, to: to.to_s), @precision)
+      BigDecimal(amount, @precision) * BigDecimal(conversion_rate(from: from.to_s, to: to.to_s), @precision)
     end
 
     private
