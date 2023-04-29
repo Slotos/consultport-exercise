@@ -34,4 +34,4 @@ parser = Class.new do
 end
 
 amount, opts = parser.parse(ARGV)
-puts Currency::Converter.new.convert(amount, **opts).to_s('F')
+puts Currency::Converter.new.convert(amount, **opts).to_s("F") # rubocop:disable Lint/RedundantStringCoercion # this is not redundant, as we don't want default formatting
